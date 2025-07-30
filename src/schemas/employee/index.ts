@@ -28,7 +28,7 @@ const employeeRegisterSchema = yup.object().shape({
     .transform(value => formatCPF(value))
     .matches(
       /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
-      "Invalid format, CPF must be 00000000000."
+      "Invalid format, CPF must be 000.000.000-00."
     ),
 
   hiredAt: yup.date().required("hiredAt field is required.")

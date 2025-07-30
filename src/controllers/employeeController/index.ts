@@ -10,7 +10,7 @@ import { STATUS_CODE } from "../../constants"
 const listAllEmployee = async (req: Request, res: Response) => {
   try {
     const employee = await listAllEmployeeService()
-    return res.status(STATUS_CODE.CREATED).send({ employee, success: true })
+    return res.status(STATUS_CODE.SUCCESS).send({ employee, success: true })
   } catch (error) {
     handleError({ error, res })
   }
@@ -24,6 +24,7 @@ const registerEmployee = async (req: Request, res: Response) => {
     handleError({ error, res })
   }
 }
+
 const updateEmployee = async (req: Request, res: Response) => {
   try {
     const employee = await updateService({ props: req.body })

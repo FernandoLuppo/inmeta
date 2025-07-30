@@ -8,6 +8,7 @@ import { documentTypeRegisterValidation } from "../../middlewares"
 const documentTypeRouter = Router()
 
 documentTypeRouter.get("/list-all", listAllDocumentType)
+
 documentTypeRouter.post(
   "/register",
   documentTypeRegisterValidation,
