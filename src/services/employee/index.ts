@@ -10,6 +10,19 @@ interface IRegisterEmployeeService {
   }
 }
 
+const listAllEmployeeService = async () => {
+  const employee = await Employee.find().select("name cpf hiredAt")
+
+  if (!employee)
+    throw new CustomError({
+      message:
+        "No employee found. Please make sure there are employee registered.",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+
+  return employee
+}
+
 const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
   const employee = await Employee.create(props)
 
@@ -43,4 +56,4 @@ const updateService = async ({
   return employee
 }
 
-export { registerEmployeeService, updateService }
+export { listAllEmployeeService, registerEmployeeService, updateService }
