@@ -4,6 +4,7 @@ import { CustomError } from "../../utils"
 
 interface IRegisterEmployeeService {
   props: {
+    _id: string
     name: string
     cpf: string
     hiredAt: Date
@@ -39,9 +40,9 @@ const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
 
 const updateService = async ({
   props
-}: Omit<IRegisterEmployeeService, "hiredAt">) => {
+}: Omit<IRegisterEmployeeService, "hiredAt" | "cpf">) => {
   const employee = await Employee.findOneAndUpdate(
-    { cpf: props.cpf },
+    { _id: props._id },
     { $set: { name: props.name } },
     { new: true }
   ).select("name cpf hiredAt")
