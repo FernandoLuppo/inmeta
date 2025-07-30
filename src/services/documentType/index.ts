@@ -15,6 +15,7 @@ const registerDocumentTypeService = async ({ name }: { name: string }) => {
 
   return documentType
 }
+
 const listAllDocumentTypeService = async () => {
   const documentType = await DocumentType.find().select("name")
 
@@ -27,4 +28,5 @@ const listAllDocumentTypeService = async () => {
 
   return documentType
 }
+
 export { registerDocumentTypeService, listAllDocumentTypeService }
