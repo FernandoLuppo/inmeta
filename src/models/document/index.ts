@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose"
+import { model, Schema, Types } from "mongoose"
 
 const DocumentSchema = new Schema(
   {
@@ -9,6 +9,7 @@ const DocumentSchema = new Schema(
     status: {
       type: String,
       enum: ["pending", "completed"],
+      default: "pending",
       required: true
     },
     employeeId: {
@@ -17,9 +18,13 @@ const DocumentSchema = new Schema(
       required: true
     },
     documentTypeId: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "DocumentType",
-      required: true
+      validate: {
+        validator: (array: Types.ObjectId[]) =>
+          Array.isArray(array) && array.length > 0,
+        message: "At least one document type is required."
+      }
     }
   },
   {
