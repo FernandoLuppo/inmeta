@@ -5,15 +5,26 @@ import {
   linkDocument,
   unlinkDocument
 } from "../../controllers/documentController"
+import {
+  linkDocumentValidation,
+  listAllPendingValidation
+} from "../../middlewares"
 
 const documentRouter = Router()
 
-documentRouter.post("/link-document", linkDocument)
+documentRouter.post("/link-document", linkDocumentValidation, linkDocument)
+
 documentRouter.delete("/unlink-document/:documentId", unlinkDocument)
+
 documentRouter.get(
   "/documents-status-by-employee/:employeeId",
   documentsStatusByEmployee
 )
-documentRouter.post("/list-all-pending", listAllPending)
+
+documentRouter.post(
+  "/list-all-pending",
+  listAllPendingValidation,
+  listAllPending
+)
 
 export { documentRouter }

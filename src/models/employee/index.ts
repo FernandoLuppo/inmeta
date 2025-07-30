@@ -10,9 +10,7 @@ const EmployeeSchema = new Schema(
     cpf: {
       type: String,
       required: true,
-      unique: true,
-      minLength: 11,
-      maxLength: 11
+      unique: true
     },
     hiredAt: {
       type: Date,
