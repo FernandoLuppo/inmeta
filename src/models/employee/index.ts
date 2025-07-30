@@ -27,6 +27,4 @@ const EmployeeSchema = new Schema(
   }
 )
 
-EmployeeSchema.index({ cpf: 1 })
-
 export default model("Employee", EmployeeSchema)

@@ -1,2 +1,3 @@
 export * from "./employee"
-export * from "./documents"
+export * from "./document"
+export * from "./documentType"
