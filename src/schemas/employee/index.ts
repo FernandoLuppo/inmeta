@@ -1,16 +1,5 @@
 import * as yup from "yup"
-
-const formatCPF = (value: string) => {
-  const digits = value.replace(/\D/g, "")
-  const validRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
-  const cpfTemplate = /(\d{3})(\d{3})(\d{3})(\d{2})/
-
-  if (validRegex.test(value)) {
-    return value
-  }
-
-  return digits.replace(cpfTemplate, "$1.$2.$3-$4")
-}
+import { formatCPF, isValidCPF } from "../../utils"
 
 const employeeRegisterSchema = yup.object().shape({
   name: yup
@@ -29,7 +18,11 @@ const employeeRegisterSchema = yup.object().shape({
     .matches(
       /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
       "Invalid format, CPF must be 000.000.000-00."
-    ),
+    )
+    .test("is-valid-cpf", "Invalid CPF number.", value => {
+      if (!value) return false
+      return isValidCPF(value)
+    }),
 
   hiredAt: yup.date().required("hiredAt field is required.")
 })

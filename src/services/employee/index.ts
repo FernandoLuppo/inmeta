@@ -14,7 +14,7 @@ interface IRegisterEmployeeService {
 const listAllEmployeeService = async () => {
   const employee = await Employee.find().select("name cpf hiredAt")
 
-  if (!employee)
+  if (employee.length === 0)
     throw new CustomError({
       message:
         "No employee found. Please make sure there are employee registered.",

@@ -19,7 +19,7 @@ const registerDocumentTypeService = async ({ name }: { name: string }) => {
 const listAllDocumentTypeService = async () => {
   const documentType = await DocumentType.find().select("name")
 
-  if (!documentType)
+  if (documentType.length === 0)
     throw new CustomError({
       message:
         "No document types found. Please make sure there are documents registered.",
