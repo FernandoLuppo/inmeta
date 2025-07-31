@@ -125,7 +125,7 @@ const listAllPendingService = async ({
     },
     {
       $lookup: {
-        from: "documenttypes",
+        from: "document_types",
         localField: "documentTypeId",
         foreignField: "_id",
         as: "documentType"
