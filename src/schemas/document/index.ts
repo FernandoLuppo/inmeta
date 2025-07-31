@@ -24,19 +24,45 @@ const linkDocumentSchema = yup.object().shape({
       /^[a-f\d]{24}$/i,
       "Invalid format: employeeId must be a valid ObjectId (24 hex characters)."
     ),
-  documentId: yup
+  documentTypeId: yup
     .array()
     .of(
       yup
         .string()
         .matches(
           /^[a-f\d]{24}$/i,
-          "Each documentId must be a valid ObjectId (24 hex characters)."
+          "Each documentTypeId  must be a valid ObjectId (24 hex characters)."
         )
-        .required("Each documentId is required.")
+        .required("Each documentTypeId is required.")
     )
+    .required("DocumentTypeId field is required.")
+    .min(1, "The documentTypeId array must contain at least one item.")
+})
+
+const sendDocumentSchema = yup.object().shape({
+  documentName: yup
+    .string()
+    .required("Document Name field is required.")
+    .min(3, "Document Name field must have at least 3 characters.")
+    .matches(
+      /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+      "Please insert your document Name correctly."
+    ),
+  employeeId: yup
+    .string()
+    .required("EmployeeId field is required.")
+    .matches(
+      /^[a-f\d]{24}$/i,
+      "Invalid format: employeeId must be a valid ObjectId (24 hex characters)."
+    ),
+  documentId: yup
+    .string()
     .required("DocumentId field is required.")
     .min(1, "The documentId array must contain at least one item.")
+    .matches(
+      /^[a-f\d]{24}$/i,
+      "Each documentId must be a valid ObjectId (24 hex characters)."
+    )
 })
 
 const listAllPendingSchema = yup.object().shape({
@@ -53,4 +79,4 @@ const listAllPendingSchema = yup.object().shape({
     .integer("Page must be an integer.")
 })
 
-export { linkDocumentSchema, listAllPendingSchema }
+export { linkDocumentSchema, sendDocumentSchema, listAllPendingSchema }
