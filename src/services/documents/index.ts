@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 import { STATUS_CODE } from "../../constants"
 import Document from "../../models/document"
-import DocumentType from "../../models/documentType"
 import { CustomError } from "../../utils"
 
 interface IDocuments {
@@ -60,7 +59,7 @@ const documentsStatusByEmployeeService = async ({
     .sort({ status: -1 })
     .select("name status documentTypeId ")
 
-  if (!document) {
+  if (document.length === 0) {
     throw new CustomError({
       message: "Employee not found",
       statusCode: STATUS_CODE.NOT_FOUND
@@ -124,10 +123,9 @@ const listAllPendingService = async ({
         preserveNullAndEmptyArrays: true
       }
     },
-
     {
       $lookup: {
-        from: "document_types",
+        from: "documenttypes",
         localField: "documentTypeId",
         foreignField: "_id",
         as: "documentType"
@@ -156,7 +154,7 @@ const listAllPendingService = async ({
     }
   ])
 
-  if (!document) {
+  if (document.length === 0) {
     throw new CustomError({
       message: "Documents not found",
       statusCode: STATUS_CODE.NOT_FOUND
