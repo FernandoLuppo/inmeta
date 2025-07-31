@@ -16,4 +16,17 @@ const registerDocumentTypeService = async ({ name }: { name: string }) => {
   return documentType
 }
 
-export { registerDocumentTypeService }
+const listAllDocumentTypeService = async () => {
+  const documentType = await DocumentType.find().select("name")
+
+  if (!documentType)
+    throw new CustomError({
+      message:
+        "No document types found. Please make sure there are documents registered.",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+
+  return documentType
+}
+
+export { registerDocumentTypeService, listAllDocumentTypeService }

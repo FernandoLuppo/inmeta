@@ -2,9 +2,8 @@ import cors from "cors"
 import express from "express"
 import * as dotenv from "dotenv"
 
-import { corsConfig } from "./config/cors"
+import { corsConfig, initDb, swaggerUi, swaggerSpec } from "./config/"
 import { documentRouter, documentTypeRouter, employeeRouter } from "./routes"
-import { initDb } from "./constants"
 
 dotenv.config()
 const app = express()
@@ -14,6 +13,7 @@ app.use(cors(corsConfig))
 app.use("/employee", employeeRouter)
 app.use("/document", documentRouter)
 app.use("/document-type", documentTypeRouter)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 initDb()
 

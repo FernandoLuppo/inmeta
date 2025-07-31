@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { STATUS_CODE } from "../../constants"
 import Document from "../../models/document"
 import DocumentType from "../../models/documentType"
@@ -70,7 +71,7 @@ const documentsStatusByEmployeeService = async ({
 }
 
 interface ISearchFilter {
-  [key: string]: string
+  (key: string): string
 }
 
 interface IListAllPendingService {
@@ -85,19 +86,21 @@ const listAllPendingService = async ({
   searchFilter,
   filters
 }: IListAllPendingService) => {
-  validateListAllPendingFilter(searchFilter)
-
   const limit = filters.limit || null
   const page = filters.page || 1
   const skip = limit ? (page - 1) * limit : 0
+  const matchFilter: any = { status: "pending" }
+
+  if (searchFilter && Object.keys(searchFilter).length > 0) {
+    validateListAllPendingFilter(searchFilter)
+
+    const key = Object.keys(searchFilter)[0]
+    const value = Object.values(searchFilter)[0]
+    matchFilter[key] = new mongoose.Types.ObjectId(value)
+  }
 
   const document = await Document.aggregate([
-    {
-      $match: { status: "pending" }
-    },
-    ...(searchFilter?.ObjectKey && searchFilter?.ObjectValue
-      ? [{ $match: { [searchFilter.ObjectKey]: searchFilter.ObjectValue } }]
-      : []),
+    { $match: matchFilter },
     {
       $sort: { createdAt: -1 }
     },
@@ -163,10 +166,16 @@ const listAllPendingService = async ({
   return document
 }
 
-const validateListAllPendingFilter = (filter: ISearchFilter | undefined) => {
+const validateListAllPendingFilter = (
+  searchFilter: ISearchFilter | undefined
+) => {
   const allowedKeys = ["employeeId", "documentTypeId"]
 
-  if (filter && filter.ObjectKey && !allowedKeys.includes(filter.ObjectKey)) {
+  if (
+    searchFilter &&
+    Object.keys(searchFilter) &&
+    !allowedKeys.includes(Object.keys(searchFilter)[0])
+  ) {
     throw new CustomError({
       message: "Filter must be 'employeeId' or 'documentTypeId'",
       statusCode: STATUS_CODE.BAD_REQUEST

@@ -1,9 +1,18 @@
 import { Router } from "express"
-import { register, update } from "../../controllers/employeeController"
+import {
+  listAllEmployee,
+  registerEmployee,
+  updateEmployee
+} from "../../controllers/employeeController"
+import {
+  registerEmployeeValidation,
+  updateEmployeeValidation
+} from "../../middlewares"
 
 const employeeRouter = Router()
 
-employeeRouter.post("/register", register)
-employeeRouter.patch("/update", update)
+employeeRouter.get("/list-all", listAllEmployee)
+employeeRouter.post("/register", registerEmployeeValidation, registerEmployee)
+employeeRouter.patch("/update", updateEmployeeValidation, updateEmployee)
 
 export { employeeRouter }

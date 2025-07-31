@@ -4,10 +4,24 @@ import { CustomError } from "../../utils"
 
 interface IRegisterEmployeeService {
   props: {
+    _id: string
     name: string
     cpf: string
     hiredAt: Date
   }
+}
+
+const listAllEmployeeService = async () => {
+  const employee = await Employee.find().select("name cpf hiredAt")
+
+  if (!employee)
+    throw new CustomError({
+      message:
+        "No employee found. Please make sure there are employee registered.",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+
+  return employee
 }
 
 const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
@@ -26,9 +40,9 @@ const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
 
 const updateService = async ({
   props
-}: Omit<IRegisterEmployeeService, "hiredAt">) => {
+}: Omit<IRegisterEmployeeService, "hiredAt" | "cpf">) => {
   const employee = await Employee.findOneAndUpdate(
-    { cpf: props.cpf },
+    { _id: props._id },
     { $set: { name: props.name } },
     { new: true }
   ).select("name cpf hiredAt")
@@ -43,4 +57,4 @@ const updateService = async ({
   return employee
 }
 
-export { registerEmployeeService, updateService }
+export { listAllEmployeeService, registerEmployeeService, updateService }

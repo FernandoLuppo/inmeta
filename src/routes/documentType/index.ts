@@ -1,8 +1,18 @@
 import { Router } from "express"
-import { registerDocumentType } from "../../controllers/documentTypeController"
+import {
+  listAllDocumentType,
+  registerDocumentType
+} from "../../controllers/documentTypeController"
+import { documentTypeRegisterValidation } from "../../middlewares"
 
 const documentTypeRouter = Router()
 
-documentTypeRouter.post("/register", registerDocumentType)
+documentTypeRouter.get("/list-all", listAllDocumentType)
+
+documentTypeRouter.post(
+  "/register",
+  documentTypeRegisterValidation,
+  registerDocumentType
+)
 
 export { documentTypeRouter }

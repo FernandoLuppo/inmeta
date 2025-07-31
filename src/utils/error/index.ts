@@ -1,6 +1,7 @@
 import { Response } from "express"
 
 import { STATUS_CODE } from "../../constants"
+import { ValidationError } from "yup"
 
 interface IHandleError {
   error: unknown | CustomError
@@ -23,6 +24,13 @@ export const handleError = ({ error, res }: IHandleError) => {
     return res
       .status(error.statusCode)
       .send({ success: false, error: error.message })
+  }
+
+  if (error instanceof ValidationError) {
+    return res.status(STATUS_CODE.BAD_REQUEST).send({
+      success: false,
+      error: error.errors
+    })
   }
 
   return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).send({
