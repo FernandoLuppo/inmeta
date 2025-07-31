@@ -49,8 +49,8 @@ const listAllPendingSchema = yup.object().shape({
   page: yup
     .number()
     .required("Page field is required.")
-    .positive("Limit must be a positive number.")
-    .integer("Limit must be an integer.")
+    .positive("Page must be a positive number.")
+    .integer("Page must be an integer.")
 })
 
 export { linkDocumentSchema, listAllPendingSchema }
