@@ -9,7 +9,8 @@ const DocumentTypeSchema = new Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    collection: "document_types"
   }
 )
 
