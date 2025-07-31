@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express"
 import { handleError } from "../../../utils"
-import { linkDocumentSchema, listAllPendingSchema } from "../../../schemas"
+import {
+  linkDocumentSchema,
+  listAllPendingSchema,
+  sendDocumentSchema
+} from "../../../schemas"
 
 const linkDocumentValidation = async (
   req: Request,
@@ -11,6 +15,21 @@ const linkDocumentValidation = async (
     await linkDocumentSchema.validate(req.body, {
       abortEarly: false,
       stripUnknown: true
+    })
+    return next()
+  } catch (error) {
+    handleError({ error, res })
+  }
+}
+
+const sendDocumentValidation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await sendDocumentSchema.validate(req.body, {
+      abortEarly: false
     })
     return next()
   } catch (error) {
@@ -33,4 +52,8 @@ const listAllPendingValidation = async (
   }
 }
 
-export { linkDocumentValidation, listAllPendingValidation }
+export {
+  linkDocumentValidation,
+  sendDocumentValidation,
+  listAllPendingValidation
+}

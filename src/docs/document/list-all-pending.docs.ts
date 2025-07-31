@@ -49,6 +49,15 @@
  *                 success:
  *                   type: boolean
  *                   example: true
+ *                 totalDocuments:
+ *                   type: integer
+ *                   example: 24
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 8
+ *                 currentPage:
+ *                   type: integer
+ *                   example: 1
  *                 documents:
  *                   type: array
  *                   items:

@@ -2,28 +2,24 @@ import mongoose from "mongoose"
 import { STATUS_CODE } from "../../constants"
 import Document from "../../models/document"
 import { CustomError } from "../../utils"
-
-interface IDocuments {
-  name: string
-  status: "pending" | "completed"
-}
-
-interface ILinkDocumentService {
-  props: IDocuments
-  documentId: string
-  employeeId: string
-}
+import {
+  ILinkDocumentService,
+  IListAllPendingService,
+  ISearchFilter,
+  ISendDocumentService
+} from "../../types"
+import Employee from "../../models/employee"
 
 const linkDocumentService = async ({
   props,
-  documentId,
+  documentTypeId,
   employeeId
 }: ILinkDocumentService) => {
   const document = await Document.create({
     name: props.name,
     status: props.status,
-    documentTypeId: documentId,
-    employeeId: employeeId
+    documentTypeId,
+    employeeId
   })
 
   if (!document) {
@@ -69,15 +65,31 @@ const documentsStatusByEmployeeService = async ({
   return document
 }
 
-interface ISearchFilter {
-  (key: string): string
-}
+const sendDocumentService = async ({ props }: ISendDocumentService) => {
+  const document = await Document.findById({ _id: props.documentId })
+    .populate("documentTypeId")
+    .select("name status documentTypeId")
 
-interface IListAllPendingService {
-  searchFilter: ISearchFilter | undefined
-  filters: {
-    limit: number
-    page: number
+  if (!document) {
+    throw new CustomError({
+      message: "Document not found",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+  }
+
+  const employee = await Employee.findById({ _id: props.employeeId }).select(
+    "name cpf hiredAt"
+  )
+  if (!employee) {
+    throw new CustomError({
+      message: "Employee not found",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+  }
+
+  return {
+    document,
+    employee
   }
 }
 
@@ -98,70 +110,80 @@ const listAllPendingService = async ({
     matchFilter[key] = new mongoose.Types.ObjectId(value)
   }
 
-  const document = await Document.aggregate([
+  const results = await Document.aggregate([
     { $match: matchFilter },
     {
-      $sort: { createdAt: -1 }
-    },
-    {
-      $skip: Number(skip)
-    },
-    {
-      $limit: Number(filters.limit)
-    },
-    {
-      $lookup: {
-        from: "employees",
-        localField: "employeeId",
-        foreignField: "_id",
-        as: "employee"
-      }
-    },
-    {
-      $unwind: {
-        path: "$employee",
-        preserveNullAndEmptyArrays: true
-      }
-    },
-    {
-      $lookup: {
-        from: "document_types",
-        localField: "documentTypeId",
-        foreignField: "_id",
-        as: "documentType"
-      }
-    },
-    {
-      $project: {
-        name: 1,
-        status: 1,
-        employee: {
-          name: "$employee.name",
-          cpf: "$employee.cpf",
-          hiredAt: "$employee.hiredAt"
-        },
-        documentTypes: {
-          $map: {
-            input: "$documentType",
-            as: "type",
-            in: {
-              _id: "$$type._id",
-              name: "$$type.name"
+      $facet: {
+        metadata: [{ $count: "total" }],
+        data: [
+          { $sort: { createdAt: -1 } },
+          { $skip: skip },
+          ...(limit ? [{ $limit: limit }] : []),
+          {
+            $lookup: {
+              from: "employees",
+              localField: "employeeId",
+              foreignField: "_id",
+              as: "employee"
+            }
+          },
+          {
+            $unwind: {
+              path: "$employee",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $lookup: {
+              from: "document_types",
+              localField: "documentTypeId",
+              foreignField: "_id",
+              as: "documentType"
+            }
+          },
+          {
+            $project: {
+              name: 1,
+              status: 1,
+              employee: {
+                name: "$employee.name",
+                cpf: "$employee.cpf",
+                hiredAt: "$employee.hiredAt"
+              },
+              documentTypes: {
+                $map: {
+                  input: "$documentType",
+                  as: "type",
+                  in: {
+                    _id: "$$type._id",
+                    name: "$$type.name"
+                  }
+                }
+              }
             }
           }
-        }
+        ]
       }
     }
   ])
 
-  if (document.length === 0) {
+  const documents = results[0]?.data || []
+  const totalDocuments = results[0]?.metadata[0]?.total || 0
+  const totalPages = limit ? Math.ceil(totalDocuments / limit) : 1
+
+  if (documents.length === 0) {
     throw new CustomError({
       message: "Documents not found",
       statusCode: STATUS_CODE.NOT_FOUND
     })
   }
 
-  return document
+  return {
+    totalDocuments,
+    totalPages,
+    currentPage: page,
+    documents
+  }
 }
 
 const validateListAllPendingFilter = (
@@ -185,5 +207,6 @@ export {
   linkDocumentService,
   unlinkDocumentService,
   documentsStatusByEmployeeService,
+  sendDocumentService,
   listAllPendingService
 }

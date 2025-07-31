@@ -15,7 +15,7 @@
  *               - name
  *               - status
  *               - employeeId
- *               - documentId
+ *               - documentTypeId
  *             properties:
  *               name:
  *                 type: string
@@ -28,7 +28,7 @@
  *                 type: string
  *                 description: MongoDB ObjectId of the employee
  *                 example: 688a4943f1f9a44d773b7e85
- *               documentId:
+ *               documentTypeId:
  *                 type: array
  *                 description: Array of document type ObjectIds
  *                 items:
@@ -91,10 +91,10 @@
  *                     - Status must be either 'pending' or 'completed'.
  *                     - EmployeeId field is required.
  *                     - Invalid format: employeeId must be a valid ObjectId (24 hex characters).
- *                     - DocumentId field is required.
- *                     - The documentId array must contain at least one item.
- *                     - Each documentId must be a valid ObjectId (24 hex characters).
- *                     - Each documentId is required.
+ *                     - DocumentTypeId field is required.
+ *                     - The documentTypeId array must contain at least one item.
+ *                     - Each documentTypeId must be a valid ObjectId (24 hex characters).
+ *                     - Each documentTypeId is required.
  *       500:
  *         description: Internal server error
  *         content:
