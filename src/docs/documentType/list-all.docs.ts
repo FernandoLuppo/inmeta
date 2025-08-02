@@ -7,7 +7,7 @@
  *       - DocumentType
  *     description: Retrieve all registered document types.
  *     responses:
- *       201:
+ *       200:
  *         description: Document types successfully listed
  *         content:
  *           application/json:

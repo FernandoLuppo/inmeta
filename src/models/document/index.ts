@@ -20,11 +20,7 @@ const DocumentSchema = new Schema(
     documentTypeId: {
       type: [Schema.Types.ObjectId],
       ref: "DocumentType",
-      validate: {
-        validator: (array: Types.ObjectId[]) =>
-          Array.isArray(array) && array.length > 0,
-        message: "At least one document type is required."
-      }
+      required: true
     }
   },
   {

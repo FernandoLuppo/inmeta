@@ -1,14 +1,11 @@
 import mongoose from "mongoose"
 
 const initDb = () => {
-  const { AMBIENT, MONGO_DEV_URI, MONGO_TEST_URI, MONGO_PROD_URI } = process.env
+  const { NODE_ENV, MONGO_DEV_URI, MONGO_PROD_URI } = process.env
 
   let mongoURI
 
-  switch (AMBIENT) {
-    case "test":
-      mongoURI = MONGO_TEST_URI
-      break
+  switch (NODE_ENV) {
     case "production":
       mongoURI = MONGO_PROD_URI
       break
@@ -23,7 +20,7 @@ const initDb = () => {
         serverSelectionTimeoutMS: 5000
       })
       .then(() => {
-        console.log(`MongoDB connected successfully to ${AMBIENT} database`)
+        console.log(`MongoDB connected successfully to ${NODE_ENV} database`)
       })
       .catch(error => {
         console.error("MongoDB connection error:", error)

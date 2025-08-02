@@ -15,6 +15,8 @@ app.use("/document", documentRouter)
 app.use("/document-type", documentTypeRouter)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-initDb()
+if (process.env.NODE_ENV !== "test") {
+  initDb()
+}
 
 export { app }

@@ -3,7 +3,7 @@ import { handleError } from "../../utils"
 import {
   listAllEmployeeService,
   registerEmployeeService,
-  updateService
+  updateEmployeeService
 } from "../../services"
 import { STATUS_CODE } from "../../constants"
 
@@ -27,7 +27,7 @@ const registerEmployee = async (req: Request, res: Response) => {
 
 const updateEmployee = async (req: Request, res: Response) => {
   try {
-    const employee = await updateService({ props: req.body })
+    const employee = await updateEmployeeService({ props: req.body })
     return res.status(STATUS_CODE.SUCCESS).send({ employee, success: true })
   } catch (error) {
     handleError({ error, res })

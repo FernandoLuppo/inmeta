@@ -21,7 +21,7 @@ const listAllDocumentType = async (req: Request, res: Response) => {
   try {
     const documentType = await listAllDocumentTypeService()
 
-    return res.status(STATUS_CODE.CREATED).send({ documentType, success: true })
+    return res.status(STATUS_CODE.SUCCESS).send({ documentType, success: true })
   } catch (error) {
     handleError({ error, res })
   }

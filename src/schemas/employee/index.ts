@@ -24,7 +24,7 @@ const employeeRegisterSchema = yup.object().shape({
       return isValidCPF(value)
     }),
 
-  hiredAt: yup.date().required("hiredAt field is required.")
+  hiredAt: yup.date().required("HiredAt field is required.")
 })
 
 const employeeUpdateSchema = yup.object().shape({
