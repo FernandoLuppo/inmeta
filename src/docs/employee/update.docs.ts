@@ -68,7 +68,7 @@
  *                     - Name field must have at least 3 characters.
  *                     - Please insert your name correctly.
  *                     - _id field is required.
- *                     - Invalid format: _id must be a valid ObjectId (24 hex characters).
+ *                     - "Invalid format: _id must be a valid ObjectId (24 hex characters)."
  *       404:
  *         description: Employee not found
  *         content:

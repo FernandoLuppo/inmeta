@@ -16,7 +16,7 @@ const documentRouter = Router()
 
 documentRouter.post("/link-document", linkDocumentValidation, linkDocument)
 
-documentRouter.delete("/unlink-document/:documentTypeId", unlinkDocument)
+documentRouter.delete("/unlink-document/:documentId", unlinkDocument)
 
 documentRouter.get(
   "/documents-status-by-employee/:employeeId",

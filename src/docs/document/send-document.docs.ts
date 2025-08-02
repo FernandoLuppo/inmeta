@@ -61,14 +61,24 @@
  *                       type: string
  *                       example: "pending"
  *                     documentTypeId:
- *                       type: object
- *                       properties:
- *                         _id:
- *                           type: string
- *                           example: "64c88b3f6e92bb4c788c8a1c"
- *                         name:
- *                           type: string
- *                           example: "Labor Documents"
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "64c88b3f6e92bb4c788c8a1c"
+ *                           name:
+ *                             type: string
+ *                             example: "Labor Documents"
+ *                           createdAt:
+ *                             type: string
+ *                             format: date-time
+ *                             example: "2025-08-01T19:22:44.386Z"
+ *                           updatedAt:
+ *                             type: string
+ *                             format: date-time
+ *                             example: "2025-08-01T19:22:44.386Z"
  *                 employee:
  *                   type: object
  *                   properties:

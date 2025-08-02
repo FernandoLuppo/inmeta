@@ -2,7 +2,7 @@ import { STATUS_CODE } from "../../constants"
 import Employee from "../../models/employee"
 import { CustomError } from "../../utils"
 
-interface IRegisterEmployeeService {
+interface IEmployeeService {
   props: {
     _id: string
     name: string
@@ -24,7 +24,9 @@ const listAllEmployeeService = async () => {
   return employee
 }
 
-const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
+const registerEmployeeService = async ({
+  props
+}: Omit<IEmployeeService, "_id">) => {
   const employee = await Employee.create(props)
 
   if (!employee) {
@@ -38,9 +40,9 @@ const registerEmployeeService = async ({ props }: IRegisterEmployeeService) => {
   return employee
 }
 
-const updateService = async ({
+const updateEmployeeService = async ({
   props
-}: Omit<IRegisterEmployeeService, "hiredAt" | "cpf">) => {
+}: Omit<IEmployeeService, "hiredAt" | "cpf">) => {
   const employee = await Employee.findOneAndUpdate(
     { _id: props._id },
     { $set: { name: props.name } },
@@ -57,4 +59,8 @@ const updateService = async ({
   return employee
 }
 
-export { listAllEmployeeService, registerEmployeeService, updateService }
+export {
+  listAllEmployeeService,
+  registerEmployeeService,
+  updateEmployeeService
+}

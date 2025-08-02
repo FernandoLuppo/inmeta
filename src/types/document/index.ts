@@ -9,12 +9,12 @@ interface ISearchFilter {
 
 interface ILinkDocumentService {
   props: IDocuments
-  documentTypeId: string
+  documentTypeId: string[]
   employeeId: string
 }
 
 interface IListAllPendingService {
-  searchFilter: ISearchFilter | undefined
+  searchFilter?: ISearchFilter
   filters: {
     limit: number
     page: number
