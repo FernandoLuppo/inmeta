@@ -34,11 +34,18 @@ const linkDocumentService = async ({
 }
 
 const unlinkDocumentService = async ({ _id }: { _id: string }) => {
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    throw new CustomError({
+      message: "_id is required to unlink a document.",
+      statusCode: STATUS_CODE.BAD_REQUEST
+    })
+  }
+
   const document = await Document.deleteOne({ _id })
 
   if (document.deletedCount === 0) {
     throw new CustomError({
-      message: "Document not found",
+      message: "Document not found.",
       statusCode: STATUS_CODE.NOT_FOUND
     })
   }
@@ -51,13 +58,20 @@ const documentsStatusByEmployeeService = async ({
 }: {
   employeeId: string
 }) => {
+  if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+    throw new CustomError({
+      message: "employeeId is required.",
+      statusCode: STATUS_CODE.NOT_FOUND
+    })
+  }
+
   const document = await Document.find({ employeeId })
     .sort({ status: -1 })
-    .select("name status documentTypeId ")
+    .select("name status documentTypeId")
 
   if (document.length === 0) {
     throw new CustomError({
-      message: "Employee not found",
+      message: "Employee not found.",
       statusCode: STATUS_CODE.NOT_FOUND
     })
   }
@@ -208,5 +222,6 @@ export {
   unlinkDocumentService,
   documentsStatusByEmployeeService,
   sendDocumentService,
-  listAllPendingService
+  listAllPendingService,
+  validateListAllPendingFilter
 }

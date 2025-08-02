@@ -81,7 +81,7 @@
  *                     - CPF field is required.
  *                     - Invalid format, CPF must be 000.000.000-00.
  *                     - Invalid CPF number.
- *                     - hiredAt field is required.
+ *                     - HiredAt field is required.
  *       409:
  *         description: Conflict - Duplicate data
  *         content:

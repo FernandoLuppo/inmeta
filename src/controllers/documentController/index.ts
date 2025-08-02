@@ -30,8 +30,8 @@ const linkDocument = async (req: Request, res: Response) => {
 
 const unlinkDocument = async (req: Request, res: Response) => {
   try {
-    const { documentTypeId } = req.params
-    const document = await unlinkDocumentService({ _id: documentTypeId })
+    const { documentId } = req.params
+    const document = await unlinkDocumentService({ _id: documentId })
     return res.status(STATUS_CODE.SUCCESS).send({ document, success: true })
   } catch (error) {
     handleError({ error, res })

@@ -1,6 +1,6 @@
 /**
  * @openapi
- * /document/unlink-document/{documentTypeId}:
+ * /document/unlink-document/{documentId}:
  *   delete:
  *     summary: Unlink (delete) a document by its ID
  *     tags:
@@ -8,7 +8,7 @@
  *     description: Deletes a document by its MongoDB ObjectId.
  *     parameters:
  *       - in: path
- *         name: documentTypeId
+ *         name: documentId
  *         required: true
  *         schema:
  *           type: string
