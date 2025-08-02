@@ -4,7 +4,7 @@ import { STATUS_CODE } from "../../../constants"
 import request from "supertest"
 
 describe("GET /list-all DocumentType", () => {
-  it("should return list of employees if found", async () => {
+  it("Should return list of employees if found", async () => {
     const mockDocumentTypeName = "Test Document Type"
     await DocumentType.create({ name: mockDocumentTypeName })
 

@@ -19,7 +19,6 @@ describe("updateEmployeeService", () => {
     }
 
     const result = await updateEmployeeService({ props })
-    console.log({ result })
     expect(result).toBeDefined()
     expect(result).toEqual(
       expect.objectContaining({

@@ -62,7 +62,6 @@ describe("PATCH /update Employee", () => {
     }
 
     const result = await request(app).patch("/employee/update").send(body)
-    console.log(result.body)
     expect(result.status).toBe(STATUS_CODE.BAD_REQUEST)
     expect(result.body.success).toBeFalsy()
     expect(result.body).toEqual({

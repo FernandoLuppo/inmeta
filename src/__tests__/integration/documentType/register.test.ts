@@ -4,14 +4,12 @@ import { STATUS_CODE } from "../../../constants"
 import request from "supertest"
 
 describe("POST /register DocumentType", () => {
-  it("should return list of employees if found", async () => {
+  it("Should return list of employees if found", async () => {
     const mockDocumentTypeName = "Test Document Type"
 
     const result = await request(app)
       .post("/document-type/register")
       .send({ name: mockDocumentTypeName })
-
-    console.log(result.body)
 
     expect(result.status).toBe(STATUS_CODE.CREATED)
     expect(result.body.success).toBeTruthy()

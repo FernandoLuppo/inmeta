@@ -4,7 +4,7 @@ import { STATUS_CODE } from "../../../constants"
 import request from "supertest"
 
 describe("POST /list-all-pending Document", () => {
-  it("Should successfully return a lins of pending documents", async () => {
+  it("Should successfully return a list of pending documents", async () => {
     await createMockDocumentWithEmployee()
     const filter = {
       page: 1,
@@ -31,7 +31,7 @@ describe("POST /list-all-pending Document", () => {
     expect(result.body.documents.documents.length).toBeGreaterThan(0)
   })
 
-  it("Should successfully return a lins of pending documents by searchFilter", async () => {
+  it("Should successfully return a list of pending documents by search filter", async () => {
     const { employee } = await createMockDocumentWithEmployee()
     const filter = {
       page: 1,
@@ -82,7 +82,7 @@ describe("POST /list-all-pending Document", () => {
     })
   })
 
-  it("Should return errors when list is empty", async () => {
+  it("Should return an error when the list is empty", async () => {
     const filter = {
       page: 1,
       limit: 5
@@ -100,7 +100,7 @@ describe("POST /list-all-pending Document", () => {
     })
   })
 
-  it("Should return errors when searchFilter have invalid values", async () => {
+  it("Should return errors when search filter has invalid values", async () => {
     const filter = {
       page: 1,
       limit: 5,

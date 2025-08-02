@@ -35,7 +35,6 @@ describe("Delete unlink-document/:documentId Document", () => {
     }
 
     const document = await Document.create(documentData)
-    console.log({ document })
 
     const result = await request(app).delete(
       `/document/unlink-document/${document._id}`

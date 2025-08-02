@@ -19,7 +19,7 @@ describe("initDb", () => {
     process.env = originalEnv
   })
 
-  it("should connect to dev database when NODE_ENV is not 'production'", async () => {
+  it("Should connect to dev database when NODE_ENV is not 'production'", async () => {
     process.env.NODE_ENV = "development"
     process.env.MONGO_DEV_URI = "mongodb://dev-uri"
 
@@ -32,7 +32,7 @@ describe("initDb", () => {
     })
   })
 
-  it("should connect to prod database when NODE_ENV is 'production'", async () => {
+  it("Should connect to prod database when NODE_ENV is 'production'", async () => {
     process.env.NODE_ENV = "production"
     process.env.MONGO_PROD_URI = "mongodb://prod-uri"
 
@@ -45,7 +45,7 @@ describe("initDb", () => {
     })
   })
 
-  it("should not call connect if URI is missing", () => {
+  it("Should not call connect if URI is missing", () => {
     delete process.env.MONGO_DEV_URI
     delete process.env.MONGO_PROD_URI
 
@@ -54,7 +54,7 @@ describe("initDb", () => {
     expect(mockConnect).not.toHaveBeenCalled()
   })
 
-  it("should catch connection error", async () => {
+  it("Should catch connection error", async () => {
     process.env.NODE_ENV = "development"
     process.env.MONGO_DEV_URI = "mongodb://fail"
 

@@ -71,9 +71,6 @@ describe("GET /documents-status-by-employee/:employeeId Document", () => {
       `/document/documents-status-by-employee/${employeeId}`
     )
 
-    console.log(result.status)
-    console.log(result.body)
-
     expect(result.status).toBe(STATUS_CODE.NOT_FOUND)
     expect(result.body).toEqual({
       success: false,
